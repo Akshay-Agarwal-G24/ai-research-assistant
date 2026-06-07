@@ -15,7 +15,11 @@ def ask_question(question):
     best_distance = results["distances"][0]
 
     if best_distance > 1.3:
-        return "I could not find the answer in the provided documents."
+        #return "I could not find the answer in the provided documents."
+        return {
+            "answer": "I could not find the answer in the provided documents.",
+            "sources": []
+        }
 
     context = ""
 
@@ -38,4 +42,23 @@ Question:
 """
     #print(f"Best Distance: {best_distance}")
 
-    return ask_llm(prompt)
+    # return ask_llm(prompt)
+
+    answer = ask_llm(prompt)
+
+    sources = []
+
+    for metadata in results["metadata"]:
+
+        source_info = (
+            f'{metadata["source"]} '
+            f'(Page {metadata["page"]})'
+        )
+
+        if source_info not in sources:
+            sources.append(source_info)
+
+    return {
+        "answer": answer,
+        "sources": sources
+    }
