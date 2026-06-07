@@ -9,7 +9,13 @@ def ask_question(question):
 
     results = retrieve_chunks(query_embedding)
 
-    chunks = results["documents"][0]
+    #chunks = results["documents"][0]
+    chunks = results["chunks"]
+
+    best_distance = results["distances"][0]
+
+    if best_distance > 1.3:
+        return "I could not find the answer in the provided documents."
 
     context = ""
 
@@ -30,5 +36,6 @@ Context:
 Question:
 {question}
 """
+    #print(f"Best Distance: {best_distance}")
 
     return ask_llm(prompt)

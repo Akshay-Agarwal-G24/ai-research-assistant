@@ -13,4 +13,9 @@ def retrieve_chunks(query_embedding, top_k=3):
         n_results=top_k
     )
 
-    return results
+    #return results
+    return {
+        "chunks": results["documents"][0],
+        "distances": results["distances"][0],
+        "ids": results["ids"][0]
+    }
