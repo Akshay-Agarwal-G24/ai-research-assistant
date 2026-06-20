@@ -6,14 +6,19 @@ answer = ask_question(question)
 
 print(answer) """
 
-question = input("Ask a question: ")
+while True:
 
-response = ask_question(question)
+    question = input("Ask a question: ")
 
-print("\nAnswer:\n")
-print(response["answer"])
+    if question.lower() == "exit":
+        break
 
-print("\nSources:")
+    response = ask_question(question)
 
-for source in response["sources"]:
-    print(f"- {source}")
+    print("\nAnswer:\n")
+    print(response["answer"])
+
+    print("\nSources:")
+
+    for source in response["sources"]:
+        print(f"- {source}")

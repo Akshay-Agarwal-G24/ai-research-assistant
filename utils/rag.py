@@ -1,11 +1,34 @@
 from utils.embeddings import create_query_embedding
 from utils.retrieve import retrieve_chunks
 from utils.llm import ask_llm
+from utils.memory import (
+    get_history,
+    add_message
+)
+from utils.query_rewriter import rewrite_question
 
 
 def ask_question(question):
 
-    query_embedding = create_query_embedding(question)
+    history = get_history()
+
+    if history:
+        rewrite_result = rewrite_question(
+        history[-4:],
+        question
+    )
+        if rewrite_result["success"]:
+            standalone_question = rewrite_result["question"]
+        else:
+            standalone_question = question
+    else:
+        standalone_question = question
+
+    """ print(
+    f"\nStandalone Question: {standalone_question}\n"
+    ) """
+
+    query_embedding = create_query_embedding(standalone_question)
 
     results = retrieve_chunks(query_embedding)
 
@@ -15,9 +38,17 @@ def ask_question(question):
     best_distance = results["distances"][0]
 
     if best_distance > 1.3:
-        #return "I could not find the answer in the provided documents."
+
+        answer = (
+        "I could not find the answer "
+        "in the provided documents."
+        )
+
+        add_message("user", question)
+        add_message("assistant", answer)
+
         return {
-            "answer": "I could not find the answer in the provided documents.",
+            "answer": answer,
             "sources": []
         }
 
@@ -38,7 +69,7 @@ Context:
 {context}
 
 Question:
-{question}
+{standalone_question}
 """
     #print(f"Best Distance: {best_distance}")
 
@@ -57,6 +88,9 @@ Question:
 
         if source_info not in sources:
             sources.append(source_info)
+
+    add_message("user", question)
+    add_message("assistant", answer)        
 
     return {
         "answer": answer,
