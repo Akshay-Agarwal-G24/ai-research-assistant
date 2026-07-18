@@ -18,7 +18,7 @@ def semantic_similarity(
     # scipy returns cosine distance. Convert it to cosine similarity.
     similarity = 1 - distance.cosine(expected_embedding, actual_embedding)
 
-    return {"score": similarity, "threshold": threshold, "passed": similarity >= threshold}
+    return {"score": float(similarity), "threshold": threshold, "passed": similarity >= threshold}
 
 
 def calculate_metrics(
