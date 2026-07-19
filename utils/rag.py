@@ -49,7 +49,11 @@ def ask_question(question):
 
         return {
             "answer": answer,
-            "sources": []
+            "sources": [],
+            "debug": {
+                "retrieved_chunks": [],
+                "retrieval_distances": results["distances"]
+            }
         }
 
     context = ""
@@ -94,5 +98,9 @@ Question:
 
     return {
         "answer": answer,
-        "sources": sources
+        "sources": sources,
+        "debug": {
+            "retrieved_chunks": chunks,
+            "retrieval_distances": results["distances"]
+            }
     }
