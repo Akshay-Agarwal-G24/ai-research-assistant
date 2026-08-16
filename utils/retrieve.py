@@ -6,7 +6,7 @@ collection = client.get_collection(
     name="research_docs"
 )
 
-def retrieve_chunks(query_embedding, top_k=3):
+def retrieve_chunks(query_embedding, top_k=10):
 
     results = collection.query(
         query_embeddings=[query_embedding.tolist()],

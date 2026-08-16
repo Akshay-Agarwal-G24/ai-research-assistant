@@ -47,6 +47,7 @@ def ask_question(question):
         add_message("user", question)
         add_message("assistant", answer)
 
+        print("Returning fallback response.")
         return {
             "answer": answer,
             "sources": [],
@@ -78,9 +79,9 @@ Question:
     #print(f"Best Distance: {best_distance}")
 
     # return ask_llm(prompt)
-
+    print("\nCalling Gemini...")
     answer = ask_llm(prompt)
-
+    print("Gemini call completed.")
     sources = []
 
     for metadata in results["metadata"]:
@@ -96,6 +97,7 @@ Question:
     add_message("user", question)
     add_message("assistant", answer)        
 
+    print("Returning successful response.")
     return {
         "answer": answer,
         "sources": sources,
